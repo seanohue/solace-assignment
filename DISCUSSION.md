@@ -1,5 +1,10 @@
 # Discussion
 
+## Meta-commentary
+
+Typically, I would break these into more granular pull requests, maybe a chain of PRs.
+For sake of time, I will do just a single PR but attempt granular and meaningful working commits within the PR.
+
 ## Project Install
 
 Noted several packages that had vulnerabilities. Initially, I chose only to upgrade the ones that could be upgraded without breaking the project. This is because I wanted to get the project up and running first, so I could see what the non-broken version looked like before making any breaking changes.
@@ -28,6 +33,14 @@ In terms of the initial appearance of the app, my goals are:
   b. The initial render error is `In HTML, <th> cannot be a child of <thead>. This will cause a hydration error.` I'll need to fix the template, most likely.
 5. Then I can address some nice-to-haves. For example, columns of the table should be sortable, and perhaps there could be a way to filter the table by certain criteria as well.
 
+## FE Code Quality Issues
+
+On looking at the code, I noticed a few issues.
+1. The entire frontend page is a single component. Best practice would be to make it more modular as needed.
+2. The search function seems to use DOM APIs in an unusual way rather than using React features. For example, updating an element on the page with a search term and then querying the DOM to get the search term to use it to filter the data. I would use React state.
+3. `<br /> tags are used in the template for line breaks and styling. This should be avoided and CSS/Tailwind can be used to add padding, gaps or margin where desired.
+
+
 Checklist:
 - [ ] Style the heading
 - [ ] Style the search bar
@@ -37,3 +50,5 @@ Checklist:
 - [ ] The initial render error is `In HTML, <th> cannot be a child of <thead>. This will cause a hydration error.` I'll need to fix the template, most likely.
 - [ ] Then I can address some nice-to-haves. For example, columns of the table should be sortable, and perhaps there could be a way to filter the table by certain criteria as well.
 - [ ] Address any accessibility issues.
+
+
