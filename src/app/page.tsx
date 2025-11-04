@@ -41,8 +41,9 @@ export default function Home() {
     setSearchTerm(e.target.value);
   };
 
-  // Fetch advocates based on search term on click.
-  const onClick = () => {
+  // Fetch advocates based on search term on submit.
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     fetchAdvocates(searchTerm, (data) => {
       console.log("data", data);
       setFilteredAdvocates(data);
@@ -52,16 +53,16 @@ export default function Home() {
   return (
     <main style={{ margin: "24px" }}>
       <h1>Solace Advocates</h1>
-      <div>
-        <p>Search by Specialty</p>
+      <form onSubmit={onSubmit}>
+        <label htmlFor="specialty-search">Search by Specialty</label>
         <input
+          id="specialty-search"
           style={{ border: "1px solid black" }}
           value={searchTerm}
           onChange={onChange}
-          onSubmit={onClick}
         />
-        <button onClick={onClick}>Search</button>
-      </div>
+        <button type="submit">Search</button>
+      </form>
       <table>
         <thead>
           <th>First Name</th>

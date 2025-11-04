@@ -54,7 +54,7 @@ Checklist:
 - [x] Remove line breaks and console logs.
 - [x] Get the search functionality to work correctly, using React state.
 - [x] Fix the search `.includes` error.
-- [ ] Enable search when pressing enter on input field
+- [x] Enable search when pressing enter on input field
 - [ ] Enable search by specialty
 - [ ] Enable search by city
 - [ ] Enable filtering by degree
@@ -62,7 +62,7 @@ Checklist:
 - [ ] Enable pagination full-stack
 - [ ] Style the table in a way that makes it more readable and visually appealing.
 - [ ] The initial render error is `In HTML, <th> cannot be a child of <thead>. This will cause a hydration error.` I'll need to fix the template, most likely.
-- [ ] Search label should use `<label>` tag and be associated with the input field.
+- [x] Search label should use `<label>` tag and be associated with the input field.
 - [ ] Componentize the page.tsx file where it makes sense to do so.
 - [ ] Address any other accessibility issues.
 
