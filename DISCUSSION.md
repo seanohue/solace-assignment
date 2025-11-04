@@ -54,6 +54,7 @@ Checklist:
 - [x] Remove line breaks and console logs.
 - [x] Get the search functionality to work correctly, using React state.
 - [x] Fix the search `.includes` error.
+- [ ] Enable search when pressing enter on input field
 - [ ] Enable search by specialty
 - [ ] Enable search by city
 - [ ] Enable filtering by degree
