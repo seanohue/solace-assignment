@@ -25,6 +25,7 @@ In terms of the initial appearance of the app, my goals are:
   b. This will also include addressing any accesisbility issues with the search/heading.
 2. Get the search functionality to work correctly. Currently it seems to do nothing, but it does increment the error count in the banner.
   a. The error is due to calling `.includes` on years of experience, which is likely a number. I will need to convert the number to a string and then call `.includes` on the string.
+  b. In terms of UX, it may not make sense to have both a search-on-type _and_ a search button. I may just remove the update on type and just have a search button.
 3. Style the table in a way that makes it more readable and visually appealing.
   a. I will also want to ensure the table is accessible to screen reader users.
   b. The phone number column should be formatted as a phone number.
@@ -32,6 +33,12 @@ In terms of the initial appearance of the app, my goals are:
   a. I also want the error banner to be accessible, esp. assuming it is something that would show in production.
   b. The initial render error is `In HTML, <th> cannot be a child of <thead>. This will cause a hydration error.` I'll need to fix the template, most likely.
 5. Then I can address some nice-to-haves. For example, columns of the table should be sortable, and perhaps there could be a way to filter the table by certain criteria as well.
+  a. It might be nice to be able to "Search by _____" instead of a text search of all columns.
+
+
+## Full-stack concerns
+
+For UI/UX reasons and performance reasons, it would be nice to have the data filtered on the server side, and paginated.
 
 ## FE Code Quality Issues
 
@@ -44,11 +51,18 @@ On looking at the code, I noticed a few issues.
 Checklist:
 - [ ] Style the heading
 - [ ] Style the search bar
-- [ ] Get the search functionality to work correctly.
-- [ ] Fix the search `.includes` error.
+- [x] Remove line breaks and console logs.
+- [x] Get the search functionality to work correctly, using React state.
+- [x] Fix the search `.includes` error.
+- [ ] Enable search by specialty
+- [ ] Enable search by city
+- [ ] Enable filtering by degree
+- [ ] Enable filtering by years of experience
+- [ ] Enable pagination full-stack
 - [ ] Style the table in a way that makes it more readable and visually appealing.
 - [ ] The initial render error is `In HTML, <th> cannot be a child of <thead>. This will cause a hydration error.` I'll need to fix the template, most likely.
-- [ ] Then I can address some nice-to-haves. For example, columns of the table should be sortable, and perhaps there could be a way to filter the table by certain criteria as well.
-- [ ] Address any accessibility issues.
+- [ ] Search label should use `<label>` tag and be associated with the input field.
+- [ ] Componentize the page.tsx file where it makes sense to do so.
+- [ ] Address any other accessibility issues.
 
 

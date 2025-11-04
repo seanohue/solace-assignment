@@ -2,57 +2,66 @@
 
 import { useEffect, useState } from "react";
 
-export default function Home() {
-  const [advocates, setAdvocates] = useState([]);
-  const [filteredAdvocates, setFilteredAdvocates] = useState([]);
+type Advocate = {
+  firstName: string;
+  lastName: string;
+  city: string;
+  degree: string;
+  specialties: string[];
+  yearsOfExperience: number;
+  phoneNumber: string;
+}
 
+function buildUrl(searchTerm: string) {
+  return searchTerm
+    ? `/api/advocates?specialty=${encodeURIComponent(searchTerm)}`
+    : "/api/advocates";
+}
+
+function fetchAdvocates(searchTerm: string, callback: (data: Advocate[]) => void) {
+  const url = buildUrl(searchTerm);
+  fetch(url).then((response) => {
+    response.json().then((response) => callback(response.data));
+  });
+}
+
+export default function Home() {
+  const [filteredAdvocates, setFilteredAdvocates] = useState<Advocate[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Fetch all advocates on initial load.
   useEffect(() => {
-    fetch("/api/advocates").then((response) => {
-      response.json().then((jsonResponse) => {
-        setAdvocates(jsonResponse.data);
-        setFilteredAdvocates(jsonResponse.data);
-      });
+    fetchAdvocates(searchTerm, (data) => {
+      console.log("data", data);
+      setFilteredAdvocates(data);
     });
   }, []);
 
-  const onChange = (e) => {
-    const searchTerm = e.target.value;
-
-    document.getElementById("search-term").innerHTML = searchTerm;
-
-    const filteredAdvocates = advocates.filter((advocate) => {
-      return (
-        advocate.firstName.includes(searchTerm) ||
-        advocate.lastName.includes(searchTerm) ||
-        advocate.city.includes(searchTerm) ||
-        advocate.degree.includes(searchTerm) ||
-        advocate.specialties.includes(searchTerm) ||
-        advocate.yearsOfExperience.includes(searchTerm)
-      );
-    });
-
-    setFilteredAdvocates(filteredAdvocates);
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
   };
 
+  // Fetch advocates based on search term on click.
   const onClick = () => {
-    setFilteredAdvocates(advocates);
+    fetchAdvocates(searchTerm, (data) => {
+      console.log("data", data);
+      setFilteredAdvocates(data);
+    });
   };
 
   return (
     <main style={{ margin: "24px" }}>
       <h1>Solace Advocates</h1>
-      <br />
-      <br />
       <div>
-        <p>Search</p>
-        <p>
-          Searching for: <span id="search-term"></span>
-        </p>
-        <input style={{ border: "1px solid black" }} onChange={onChange} />
-        <button onClick={onClick}>Reset Search</button>
+        <p>Search by Specialty</p>
+        <input
+          style={{ border: "1px solid black" }}
+          value={searchTerm}
+          onChange={onChange}
+          onSubmit={onClick}
+        />
+        <button onClick={onClick}>Search</button>
       </div>
-      <br />
-      <br />
       <table>
         <thead>
           <th>First Name</th>
@@ -72,8 +81,8 @@ export default function Home() {
                 <td>{advocate.city}</td>
                 <td>{advocate.degree}</td>
                 <td>
-                  {advocate.specialties.map((s) => (
-                    <div>{s}</div>
+                  {advocate.specialties.map((specialty) => (
+                    <div>{specialty}</div>
                   ))}
                 </td>
                 <td>{advocate.yearsOfExperience}</td>
