@@ -65,5 +65,7 @@ Checklist:
 - [x] Search label should use `<label>` tag and be associated with the input field.
 - [ ] Componentize the page.tsx file where it makes sense to do so.
 - [ ] Address any other accessibility issues.
+- [ ] Pagination, search and filtering should be represented in the URL potentially, or there could be a way to have a permalink to a specific page of results.
+- [ ] Ideally there are unit/integration tests for the frontend and backend.
 
 
