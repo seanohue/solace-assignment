@@ -58,8 +58,8 @@ Checklist:
 - [x] The initial render error is `In HTML, <th> cannot be a child of <thead>. This will cause a hydration error.` I'll need to fix the template, most likely.
 - [x] Search label should use `<label>` tag and be associated with the input field.
 - [x] Enable pagination full-stack
-- [ ] Format phone number
-- [ ] Enable search by specialty
+- [x] Format phone number
+- [x] Enable search by specialty
 - [ ] Enable search by city
 - [ ] Enable filtering by degree
 - [ ] Enable filtering by years of experience

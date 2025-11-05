@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { parsePhoneNumber } from "libphonenumber-js";
 
 type Advocate = {
   firstName: string;
@@ -38,6 +39,18 @@ function fetchAdvocates(
   fetch(url).then((response) => {
     response.json().then((data) => callback(data));
   });
+}
+
+function formatPhoneNumber(phoneNumber: number | string): string {
+  try {
+    const phoneStr = String(phoneNumber);
+    // Assume US format if no country code
+    const phone = parsePhoneNumber(phoneStr, phoneStr.length === 10 ? "US" : undefined);
+    return phone.formatNational();
+  } catch {
+    // Fallback to original if parsing fails
+    return String(phoneNumber);
+  }
 }
 
 export default function Home() {
@@ -148,7 +161,7 @@ export default function Home() {
                     </div>
                   </td>
                   <td className="table-cell">{advocate.yearsOfExperience}</td>
-                  <td className="table-cell">{advocate.phoneNumber}</td>
+                  <td className="table-cell text-center min-w-40">{formatPhoneNumber(advocate.phoneNumber)}</td>
                 </tr>
               );
             })}
