@@ -61,9 +61,10 @@ Checklist:
 - [x] Format phone number
 - [x] Enable search by specialty
 - [ ] Enable search by city
+- [ ] Sort by last name by default
 - [x] Enable filtering by degree
 - [x] Enable filtering by years of experience
-- [ ] Style the table in a way that makes it more readable and visually appealing.
+- [x] Style the table in a way that makes it more readable and visually appealing.
 - [ ] Componentize the page.tsx file where it makes sense to do so.
 - [ ] Address any other accessibility issues.
 - [ ] Pagination, search and filtering should be represented in the URL potentially, or there could be a way to have a permalink to a specific page of results.

@@ -42,6 +42,9 @@ export async function GET(request: Request) {
     data = data.filter((advocate) => advocate.degree === degree);
   }
 
+  // Sort by last name (ascending)
+  data.sort((a, b) => a.lastName.localeCompare(b.lastName));
+
   const total = data.length;
 
   // Apply cursor-based pagination
