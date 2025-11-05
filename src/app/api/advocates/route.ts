@@ -10,6 +10,7 @@ export async function GET(request: Request) {
   const specialty = searchParams.get("specialty");
   const minYearsParam = searchParams.get("minYears");
   const degree = searchParams.get("degree");
+  const city = searchParams.get("city");
   const cursorParam = searchParams.get("cursor");
   const limitParam = searchParams.get("limit");
 
@@ -40,6 +41,11 @@ export async function GET(request: Request) {
   // Filter by degree
   if (degree && degree !== "Any") {
     data = data.filter((advocate) => advocate.degree === degree);
+  }
+
+  // Filter by city
+  if (city && city !== "Any") {
+    data = data.filter((advocate) => advocate.city === city);
   }
 
   // Sort by last name (ascending)

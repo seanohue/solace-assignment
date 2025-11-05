@@ -25,7 +25,8 @@ function buildUrl(
   cursor: number | null = null,
   limit: number = 10,
   minYears: number | null = null,
-  degree: string | null = null
+  degree: string | null = null,
+  city: string | null = null
 ) {
   const params = new URLSearchParams();
   if (searchTerm) {
@@ -37,10 +38,12 @@ function buildUrl(
   if (degree && degree !== "Any") {
     params.set("degree", degree);
   }
+  if (city && city !== "Any") {
+    params.set("city", city);
+  }
   params.set("cursor", (cursor ?? 0).toString());
   params.set("limit", limit.toString());
 
-  console.log(params.toString());
   return `/api/advocates?${params.toString()}`;
 }
 
@@ -49,12 +52,19 @@ function fetchAdvocates(
   cursor: number | null,
   minYears: number | null,
   degree: string | null,
+  city: string | null,
   callback: (response: PaginationResponse) => void
 ) {
-  const url = buildUrl(searchTerm, cursor, 10, minYears, degree);
+  const url = buildUrl(searchTerm, cursor, 10, minYears, degree, city);
   fetch(url).then((response) => {
     response.json().then((data) => callback(data));
   });
+}
+
+async function fetchCities(callback: (cities: string[]) => void) {
+  const response = await fetch("/api/cities");
+  const data = await response.json();
+  callback(data.cities);
 }
 
 /**
@@ -90,13 +100,15 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [minYears, setMinYears] = useState<number | null>(0);
   const [degree, setDegree] = useState<string | null>("Any");
+  const [city, setCity] = useState<string | null>("Any");
+  const [cities, setCities] = useState<string[]>([]);
   const [cursor, setCursor] = useState<number | null>(null);
   const [total, setTotal] = useState(0);
   const [nextCursor, setNextCursor] = useState<number | null>(null);
   const [prevCursor, setPrevCursor] = useState<number | null>(null);
 
   const loadPage = (newCursor: number | null = null) => {
-    fetchAdvocates(searchTerm, newCursor, minYears, degree, (response) => {
+    fetchAdvocates(searchTerm, newCursor, minYears, degree, city, (response) => {
       setFilteredAdvocates(response.data);
       setTotal(response.total);
       setNextCursor(response.nextCursor);
@@ -107,11 +119,18 @@ export default function Home() {
 
   const resetPage = () => loadPage(0);
 
+  // Fetch cities on initial load
+  useEffect(() => {
+    fetchCities((citiesList) => {
+      setCities(citiesList);
+    });
+  }, []);
+
   // Fetch all advocates on initial load and when filters change
   useEffect(() => {
     resetPage();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [minYears, degree]);
+  }, [minYears, degree, city]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -131,10 +150,15 @@ export default function Home() {
     setDegree(e.target.value);
   };
 
+  const onCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setCity(e.target.value);
+  };
+
   const handleClear = () => {
     setSearchTerm("");
     setMinYears(0);
     setDegree("Any");
+    setCity("Any");
     resetPage();
   };
 
@@ -208,6 +232,24 @@ export default function Home() {
               <option value="MD">MD</option>
               <option value="PhD">PhD</option>
               <option value="MSW">MSW</option>
+            </select>
+          </div>
+          <div className="min-w-48">
+            <label htmlFor="city" className="filter-label">
+              City
+            </label>
+            <select
+              id="city"
+              className="filter-select"
+              value={city ?? "Any"}
+              onChange={onCityChange}
+            >
+              <option value="Any">Any</option>
+              {cities.map((cityOption) => (
+                <option key={cityOption} value={cityOption}>
+                  {cityOption}
+                </option>
+              ))}
             </select>
           </div>
           <div className="flex gap-2">
