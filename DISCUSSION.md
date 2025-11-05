@@ -61,8 +61,8 @@ Checklist:
 - [x] Format phone number
 - [x] Enable search by specialty
 - [ ] Enable search by city
-- [ ] Enable filtering by degree
-- [ ] Enable filtering by years of experience
+- [x] Enable filtering by degree
+- [x] Enable filtering by years of experience
 - [ ] Style the table in a way that makes it more readable and visually appealing.
 - [ ] Componentize the page.tsx file where it makes sense to do so.
 - [ ] Address any other accessibility issues.

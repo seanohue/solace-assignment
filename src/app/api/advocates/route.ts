@@ -8,6 +8,8 @@ export async function GET(request: Request) {
 
   const { searchParams } = new URL(request.url);
   const specialty = searchParams.get("specialty");
+  const minYearsParam = searchParams.get("minYears");
+  const degree = searchParams.get("degree");
   const cursorParam = searchParams.get("cursor");
   const limitParam = searchParams.get("limit");
 
@@ -25,6 +27,19 @@ export async function GET(request: Request) {
         s.toLowerCase().includes(specialtyLower)
       )
     );
+  }
+
+  // Filter by minimum years of experience
+  if (minYearsParam) {
+    const minYears = parseInt(minYearsParam, 10);
+    if (minYears > 0) {
+      data = data.filter((advocate) => advocate.yearsOfExperience >= minYears);
+    }
+  }
+
+  // Filter by degree
+  if (degree && degree !== "Any") {
+    data = data.filter((advocate) => advocate.degree === degree);
   }
 
   const total = data.length;

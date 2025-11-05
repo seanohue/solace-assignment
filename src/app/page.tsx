@@ -20,22 +20,38 @@ type PaginationResponse = {
   prevCursor: number | null;
 }
 
-function buildUrl(searchTerm: string, cursor: number | null = null, limit: number = 10) {
+function buildUrl(
+  searchTerm: string,
+  cursor: number | null = null,
+  limit: number = 10,
+  minYears: number | null = null,
+  degree: string | null = null
+) {
   const params = new URLSearchParams();
   if (searchTerm) {
     params.set("specialty", searchTerm);
   }
+  if (minYears !== null && minYears > 0) {
+    params.set("minYears", minYears.toString());
+  }
+  if (degree && degree !== "Any") {
+    params.set("degree", degree);
+  }
   params.set("cursor", (cursor ?? 0).toString());
   params.set("limit", limit.toString());
+
+  console.log(params.toString());
   return `/api/advocates?${params.toString()}`;
 }
 
 function fetchAdvocates(
   searchTerm: string,
   cursor: number | null,
+  minYears: number | null,
+  degree: string | null,
   callback: (response: PaginationResponse) => void
 ) {
-  const url = buildUrl(searchTerm, cursor);
+  const url = buildUrl(searchTerm, cursor, 10, minYears, degree);
   fetch(url).then((response) => {
     response.json().then((data) => callback(data));
   });
@@ -72,13 +88,15 @@ function getPhoneNumberE164(phoneNumber: number | string): string | null {
 export default function Home() {
   const [filteredAdvocates, setFilteredAdvocates] = useState<Advocate[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [minYears, setMinYears] = useState<number | null>(0);
+  const [degree, setDegree] = useState<string | null>("Any");
   const [cursor, setCursor] = useState<number | null>(null);
   const [total, setTotal] = useState(0);
   const [nextCursor, setNextCursor] = useState<number | null>(null);
   const [prevCursor, setPrevCursor] = useState<number | null>(null);
 
   const loadPage = (newCursor: number | null = null) => {
-    fetchAdvocates(searchTerm, newCursor, (response) => {
+    fetchAdvocates(searchTerm, newCursor, minYears, degree, (response) => {
       setFilteredAdvocates(response.data);
       setTotal(response.total);
       setNextCursor(response.nextCursor);
@@ -89,8 +107,11 @@ export default function Home() {
 
   const resetPage = () => loadPage(0);
 
-  // Fetch all advocates on initial load.
-  useEffect(() => resetPage(), []);
+  // Fetch all advocates on initial load and when filters change
+  useEffect(() => {
+    resetPage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [minYears, degree]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -98,6 +119,22 @@ export default function Home() {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    resetPage();
+  };
+
+  const onMinYearsChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value === "0" ? 0 : parseInt(e.target.value, 10);
+    setMinYears(value);
+  };
+
+  const onDegreeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setDegree(e.target.value);
+  };
+
+  const handleClear = () => {
+    setSearchTerm("");
+    setMinYears(0);
+    setDegree("Any");
     resetPage();
   };
 
@@ -126,8 +163,8 @@ export default function Home() {
       <h1 className="text-3xl font-bold text-primary mb-6">Solace Advocates</h1>
       
       <form onSubmit={onSubmit} className="mb-8">
-        <div className="flex gap-4 items-end">
-          <div className="flex-1">
+        <div className="flex flex-wrap gap-4 items-end">
+          <div className="flex-1 min-w-64">
             <label htmlFor="specialty-search" className="block text-sm font-medium text-neutral-dark-grey mb-2">
               Search by Specialty
             </label>
@@ -139,12 +176,55 @@ export default function Home() {
               placeholder="Enter specialty..."
             />
           </div>
-          <button
-            type="submit"
-            className="px-6 py-2 bg-primary text-neutral-white rounded-md hover:bg-primary-focused transition-colors font-medium"
-          >
-            Search
-          </button>
+          <div className="min-w-48">
+            <label htmlFor="min-years" className="filter-label">
+              Min Years Experience
+            </label>
+            <select
+              id="min-years"
+              className="filter-select"
+              value={minYears ?? 0}
+              onChange={onMinYearsChange}
+            >
+              <option value={0}>0 (All)</option>
+              {[...Array(15)].map((_, i) => (
+                <option key={i + 1} value={i + 1}>
+                  {i + 1}+
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="min-w-48">
+            <label htmlFor="degree" className="filter-label">
+              Degree
+            </label>
+            <select
+              id="degree"
+              className="filter-select"
+              value={degree ?? "Any"}
+              onChange={onDegreeChange}
+            >
+              <option value="Any">Any</option>
+              <option value="MD">MD</option>
+              <option value="PhD">PhD</option>
+              <option value="MSW">MSW</option>
+            </select>
+          </div>
+          <div className="flex gap-2">
+            <button
+              type="submit"
+              className="px-6 py-2 bg-primary text-neutral-white rounded-md hover:bg-primary-focused transition-colors font-medium"
+            >
+              Search
+            </button>
+            <button
+              type="button"
+              onClick={handleClear}
+              className="px-6 py-2 bg-neutral-light-grey text-neutral-black rounded-md hover:bg-neutral-grey transition-colors font-medium"
+            >
+              Clear
+            </button>
+          </div>
         </div>
       </form>
 
