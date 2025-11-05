@@ -12,7 +12,7 @@ export async function GET(request: Request) {
   const limitParam = searchParams.get("limit");
 
   // Parse pagination params
-  const limit = limitParam ? parseInt(limitParam, 10) : 25;
+  const limit = limitParam ? parseInt(limitParam, 10) : 10;
   const cursor = cursorParam ? parseInt(cursorParam, 10) : 0;
 
   let data = advocateData;

@@ -19,7 +19,7 @@ type PaginationResponse = {
   prevCursor: number | null;
 }
 
-function buildUrl(searchTerm: string, cursor: number | null = null, limit: number = 25) {
+function buildUrl(searchTerm: string, cursor: number | null = null, limit: number = 10) {
   const params = new URLSearchParams();
   if (searchTerm) {
     params.set("specialty", searchTerm);
@@ -58,42 +58,38 @@ export default function Home() {
     });
   };
 
+  const resetPage = () => loadPage(0);
+
   // Fetch all advocates on initial load.
-  useEffect(() => {
-    loadPage(0);
-  }, []);
+  useEffect(() => resetPage(), []);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
-  // Fetch advocates based on search term on submit.
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    loadPage(0); // Reset to first page when searching
+    resetPage();
   };
 
-  const handleFirst = () => {
-    loadPage(0);
-  };
-
-  const handlePrevious = () => {
+  const goPrevious = () => {
     if (prevCursor !== null) {
       loadPage(prevCursor);
     }
   };
 
-  const handleNext = () => {
+  const goNext = () => {
     if (nextCursor !== null) {
       loadPage(nextCursor);
     }
   };
 
-  const handleLast = () => {
-    // Calculate last page cursor
+  const goLast = () => {
     const lastPageStart = total > 0 ? Math.floor((total - 1) / 25) * 25 : 0;
     loadPage(lastPageStart);
   };
+
+  const isShowingAllResults = nextCursor === null && prevCursor === null && (cursor === 0 || cursor === null);
 
   return (
     <main style={{ margin: "24px" }}>
@@ -139,38 +135,45 @@ export default function Home() {
         </tbody>
       </table>
       <div style={{ marginTop: "24px", display: "flex", gap: "8px", alignItems: "center" }}>
-        <button
-          onClick={handleFirst}
-          disabled={prevCursor === null}
-          style={{ padding: "8px 16px", cursor: prevCursor === null ? "not-allowed" : "pointer" }}
-        >
-          First
-        </button>
-        <button
-          onClick={handlePrevious}
-          disabled={prevCursor === null}
-          style={{ padding: "8px 16px", cursor: prevCursor === null ? "not-allowed" : "pointer" }}
-        >
-          Previous
-        </button>
-        <span style={{ margin: "0 16px" }}>
-          Showing {filteredAdvocates.length > 0 ? (cursor || 0) + 1 : 0}-
-          {(cursor || 0) + filteredAdvocates.length} of {total}
-        </span>
-        <button
-          onClick={handleNext}
-          disabled={nextCursor === null}
-          style={{ padding: "8px 16px", cursor: nextCursor === null ? "not-allowed" : "pointer" }}
-        >
-          Next
-        </button>
-        <button
-          onClick={handleLast}
-          disabled={nextCursor === null}
-          style={{ padding: "8px 16px", cursor: nextCursor === null ? "not-allowed" : "pointer" }}
-        >
-          Last
-        </button>
+        {isShowingAllResults ? (
+          <span>Showing all {total} results</span>
+        ) : (
+          <>
+            <span>Showing {filteredAdvocates.length} of {total} results</span>
+            <button
+              onClick={resetPage}
+              disabled={prevCursor === null}
+              style={{ padding: "8px 16px", cursor: prevCursor === null ? "not-allowed" : "pointer" }}
+            >
+              First
+            </button>
+            <button
+              onClick={goPrevious}
+              disabled={prevCursor === null}
+              style={{ padding: "8px 16px", cursor: prevCursor === null ? "not-allowed" : "pointer" }}
+            >
+              Previous
+            </button>
+            <span style={{ margin: "0 16px" }}>
+              Showing {filteredAdvocates.length > 0 ? (cursor || 0) + 1 : 0}-
+              {(cursor || 0) + filteredAdvocates.length} of {total}
+            </span>
+            <button
+              onClick={goNext}
+              disabled={nextCursor === null}
+              style={{ padding: "8px 16px", cursor: nextCursor === null ? "not-allowed" : "pointer" }}
+            >
+              Next
+            </button>
+            <button
+              onClick={goLast}
+              disabled={nextCursor === null}
+              style={{ padding: "8px 16px", cursor: nextCursor === null ? "not-allowed" : "pointer" }}
+            >
+              Last
+            </button>
+          </>
+        )}
       </div>
     </main>
   );
