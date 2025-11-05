@@ -104,7 +104,7 @@ export default function Home() {
             </label>
             <input
               id="specialty-search"
-              className="w-full px-4 py-2 border border-neutral-light-grey rounded-md focus:outline-none focus:ring-2 focus:ring-primary-focused focus:border-transparent"
+              className="w-full form-input-padding border border-neutral-light-grey rounded-md focus:outline-none focus:ring-2 focus:ring-primary-focused focus:border-transparent"
               value={searchTerm}
               onChange={onChange}
               placeholder="Enter specialty..."
@@ -169,28 +169,28 @@ export default function Home() {
               <button
                 onClick={resetPage}
                 disabled={prevCursor === null}
-                className="pagination-button-padding pagination-button-theme font-medium"
+                className="form-input-padding pagination-button-theme font-medium"
               >
                 First
               </button>
               <button
                 onClick={goPrevious}
                 disabled={prevCursor === null}
-                className="pagination-button-padding pagination-button-theme font-medium"
+                className="form-input-padding pagination-button-theme font-medium"
               >
                 Previous
               </button>
               <button
                 onClick={goNext}
                 disabled={nextCursor === null}
-                className="pagination-button-padding pagination-button-theme font-medium"
+                className="form-input-padding pagination-button-theme font-medium"
               >
                 Next
               </button>
               <button
                 onClick={goLast}
                 disabled={nextCursor === null}
-                className="pagination-button-padding pagination-button-theme font-medium"
+                className="form-input-padding pagination-button-theme font-medium"
               >
                 Last
               </button>

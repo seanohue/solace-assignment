@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer components {
-  .pagination-button-padding {
+  .form-input-padding {
     @apply px-4 py-2;
   }
 
