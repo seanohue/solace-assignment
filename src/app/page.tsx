@@ -123,32 +123,32 @@ export default function Home() {
         <table className="min-w-full border-collapse border border-neutral-light-grey">
           <thead>
             <tr className="bg-primary text-neutral-white">
-              <th className="px-4 py-3 text-left font-semibold border border-neutral-light-grey">First Name</th>
-              <th className="px-4 py-3 text-left font-semibold border border-neutral-light-grey">Last Name</th>
-              <th className="px-4 py-3 text-left font-semibold border border-neutral-light-grey">City</th>
-              <th className="px-4 py-3 text-left font-semibold border border-neutral-light-grey">Degree</th>
-              <th className="px-4 py-3 text-left font-semibold border border-neutral-light-grey">Specialties</th>
-              <th className="px-4 py-3 text-left font-semibold border border-neutral-light-grey">Years of Experience</th>
-              <th className="px-4 py-3 text-left font-semibold border border-neutral-light-grey">Phone Number</th>
+              <th className="table-cell text-left font-semibold">First Name</th>
+              <th className="table-cell text-left font-semibold">Last Name</th>
+              <th className="table-cell text-left font-semibold">City</th>
+              <th className="table-cell text-left font-semibold">Degree</th>
+              <th className="table-cell text-left font-semibold">Specialties</th>
+              <th className="table-cell text-left font-semibold">Years of Experience</th>
+              <th className="table-cell text-left font-semibold">Phone Number</th>
             </tr>
           </thead>
           <tbody>
             {filteredAdvocates.map((advocate, index) => {
               return (
                 <tr key={index} className="hover:bg-green-100 transition-colors">
-                  <td className="px-4 py-3 border border-neutral-light-grey">{advocate.firstName}</td>
-                  <td className="px-4 py-3 border border-neutral-light-grey">{advocate.lastName}</td>
-                  <td className="px-4 py-3 border border-neutral-light-grey">{advocate.city}</td>
-                  <td className="px-4 py-3 border border-neutral-light-grey">{advocate.degree}</td>
-                  <td className="px-4 py-3 border border-neutral-light-grey">
+                  <td className="table-cell">{advocate.firstName}</td>
+                  <td className="table-cell">{advocate.lastName}</td>
+                  <td className="table-cell">{advocate.city}</td>
+                  <td className="table-cell">{advocate.degree}</td>
+                  <td className="table-cell">
                     <div className="flex flex-col gap-1">
                       {advocate.specialties.map((specialty, i) => (
                         <span key={i} className="text-sm">{specialty}</span>
                       ))}
                     </div>
                   </td>
-                  <td className="px-4 py-3 border border-neutral-light-grey">{advocate.yearsOfExperience}</td>
-                  <td className="px-4 py-3 border border-neutral-light-grey">{advocate.phoneNumber}</td>
+                  <td className="table-cell">{advocate.yearsOfExperience}</td>
+                  <td className="table-cell">{advocate.phoneNumber}</td>
                 </tr>
               );
             })}
@@ -169,28 +169,28 @@ export default function Home() {
               <button
                 onClick={resetPage}
                 disabled={prevCursor === null}
-                className="px-4 py-2 bg-primary text-neutral-white rounded-md hover:bg-primary-focused transition-colors disabled:bg-neutral-grey disabled:cursor-not-allowed disabled:hover:bg-neutral-grey font-medium"
+                className="pagination-button-padding pagination-button-theme font-medium"
               >
                 First
               </button>
               <button
                 onClick={goPrevious}
                 disabled={prevCursor === null}
-                className="px-4 py-2 bg-primary text-neutral-white rounded-md hover:bg-primary-focused transition-colors disabled:bg-neutral-grey disabled:cursor-not-allowed disabled:hover:bg-neutral-grey font-medium"
+                className="pagination-button-padding pagination-button-theme font-medium"
               >
                 Previous
               </button>
               <button
                 onClick={goNext}
                 disabled={nextCursor === null}
-                className="px-4 py-2 bg-primary text-neutral-white rounded-md hover:bg-primary-focused transition-colors disabled:bg-neutral-grey disabled:cursor-not-allowed disabled:hover:bg-neutral-grey font-medium"
+                className="pagination-button-padding pagination-button-theme font-medium"
               >
                 Next
               </button>
               <button
                 onClick={goLast}
                 disabled={nextCursor === null}
-                className="px-4 py-2 bg-primary text-neutral-white rounded-md hover:bg-primary-focused transition-colors disabled:bg-neutral-grey disabled:cursor-not-allowed disabled:hover:bg-neutral-grey font-medium"
+                className="pagination-button-padding pagination-button-theme font-medium"
               >
                 Last
               </button>

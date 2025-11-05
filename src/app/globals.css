@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .pagination-button-padding {
+    @apply px-4 py-2;
+  }
+
+  .pagination-button-theme {
+    @apply bg-primary text-neutral-white rounded-md hover:bg-primary-focused transition-colors disabled:bg-neutral-grey disabled:cursor-not-allowed disabled:hover:bg-neutral-grey
+  }
+
+  .table-padding {
+    @apply px-4 py-3;
+  }
+
+  .table-border {
+    @apply border border-neutral-light-grey;
+  }
+
+  .table-cell {
+    @apply px-4 py-3 border border-neutral-light-grey;
+  }
+}
+
