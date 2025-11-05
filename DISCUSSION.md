@@ -5,6 +5,8 @@
 Typically, I would break these changes into more granular pull requests, maybe a chain of PRs.
 For sake of time, I will do just a single PR but attempt granular and meaningful working commits within the PR.
 
+Also, I developed this largely on Windows for WSL as I did not initially have access to a Mac (I'm used to using a Mac and Unix for development). As a result, some early commits may have some odd filesystem stuff that I cleaned up later on.
+
 ## First Impressions and Concerns
 
 ### Project Install
