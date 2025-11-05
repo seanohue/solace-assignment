@@ -49,8 +49,8 @@ On looking at the code, I noticed a few issues.
 
 
 Checklist:
-- [ ] Style the heading
-- [ ] Style the search bar
+- [x] Style the heading
+- [x] Style the search bar
 - [x] Remove line breaks and console logs.
 - [x] Get the search functionality to work correctly, using React state.
 - [x] Fix the search `.includes` error.
@@ -58,6 +58,7 @@ Checklist:
 - [x] The initial render error is `In HTML, <th> cannot be a child of <thead>. This will cause a hydration error.` I'll need to fix the template, most likely.
 - [x] Search label should use `<label>` tag and be associated with the input field.
 - [x] Enable pagination full-stack
+- [ ] Format phone number
 - [ ] Enable search by specialty
 - [ ] Enable search by city
 - [ ] Enable filtering by degree

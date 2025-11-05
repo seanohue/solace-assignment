@@ -85,95 +85,116 @@ export default function Home() {
   };
 
   const goLast = () => {
-    const lastPageStart = total > 0 ? Math.floor((total - 1) / 25) * 25 : 0;
+    const limit = 10;
+    const lastPageStart = total > 0 ? Math.floor((total - 1) / limit) * limit : 0;
     loadPage(lastPageStart);
   };
 
   const isShowingAllResults = nextCursor === null && prevCursor === null && (cursor === 0 || cursor === null);
 
   return (
-    <main style={{ margin: "24px" }}>
-      <h1>Solace Advocates</h1>
-      <form onSubmit={onSubmit}>
-        <label htmlFor="specialty-search">Search by Specialty</label>
-        <input
-          id="specialty-search"
-          style={{ border: "1px solid black" }}
-          value={searchTerm}
-          onChange={onChange}
-        />
-        <button type="submit">Search</button>
+    <main className="p-6 max-w-7xl mx-auto">
+      <h1 className="text-3xl font-bold text-primary mb-6">Solace Advocates</h1>
+      
+      <form onSubmit={onSubmit} className="mb-8">
+        <div className="flex gap-4 items-end">
+          <div className="flex-1">
+            <label htmlFor="specialty-search" className="block text-sm font-medium text-neutral-dark-grey mb-2">
+              Search by Specialty
+            </label>
+            <input
+              id="specialty-search"
+              className="w-full px-4 py-2 border border-neutral-light-grey rounded-md focus:outline-none focus:ring-2 focus:ring-primary-focused focus:border-transparent"
+              value={searchTerm}
+              onChange={onChange}
+              placeholder="Enter specialty..."
+            />
+          </div>
+          <button
+            type="submit"
+            className="px-6 py-2 bg-primary text-neutral-white rounded-md hover:bg-primary-focused transition-colors font-medium"
+          >
+            Search
+          </button>
+        </div>
       </form>
-      <table>
-        <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>City</th>
-            <th>Degree</th>
-            <th>Specialties</th>
-            <th>Years of Experience</th>
-            <th>Phone Number</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredAdvocates.map((advocate) => {
-            return (
-              <tr>
-                <td>{advocate.firstName}</td>
-                <td>{advocate.lastName}</td>
-                <td>{advocate.city}</td>
-                <td>{advocate.degree}</td>
-                <td>
-                  {advocate.specialties.map((specialty) => (
-                    <div>{specialty}</div>
-                  ))}
-                </td>
-                <td>{advocate.yearsOfExperience}</td>
-                <td>{advocate.phoneNumber}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      <div style={{ marginTop: "24px", display: "flex", gap: "8px", alignItems: "center" }}>
+
+      <div className="overflow-x-auto mb-6">
+        <table className="min-w-full border-collapse border border-neutral-light-grey">
+          <thead>
+            <tr className="bg-primary text-neutral-white">
+              <th className="px-4 py-3 text-left font-semibold border border-neutral-light-grey">First Name</th>
+              <th className="px-4 py-3 text-left font-semibold border border-neutral-light-grey">Last Name</th>
+              <th className="px-4 py-3 text-left font-semibold border border-neutral-light-grey">City</th>
+              <th className="px-4 py-3 text-left font-semibold border border-neutral-light-grey">Degree</th>
+              <th className="px-4 py-3 text-left font-semibold border border-neutral-light-grey">Specialties</th>
+              <th className="px-4 py-3 text-left font-semibold border border-neutral-light-grey">Years of Experience</th>
+              <th className="px-4 py-3 text-left font-semibold border border-neutral-light-grey">Phone Number</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredAdvocates.map((advocate, index) => {
+              return (
+                <tr key={index} className="hover:bg-green-100 transition-colors">
+                  <td className="px-4 py-3 border border-neutral-light-grey">{advocate.firstName}</td>
+                  <td className="px-4 py-3 border border-neutral-light-grey">{advocate.lastName}</td>
+                  <td className="px-4 py-3 border border-neutral-light-grey">{advocate.city}</td>
+                  <td className="px-4 py-3 border border-neutral-light-grey">{advocate.degree}</td>
+                  <td className="px-4 py-3 border border-neutral-light-grey">
+                    <div className="flex flex-col gap-1">
+                      {advocate.specialties.map((specialty, i) => (
+                        <span key={i} className="text-sm">{specialty}</span>
+                      ))}
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 border border-neutral-light-grey">{advocate.yearsOfExperience}</td>
+                  <td className="px-4 py-3 border border-neutral-light-grey">{advocate.phoneNumber}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="flex items-center gap-4 flex-wrap">
         {isShowingAllResults ? (
-          <span>Showing all {total} results</span>
+          <span className="text-neutral-dark-grey">Showing all {total} results</span>
         ) : (
           <>
-            <span>Showing {filteredAdvocates.length} of {total} results</span>
-            <button
-              onClick={resetPage}
-              disabled={prevCursor === null}
-              style={{ padding: "8px 16px", cursor: prevCursor === null ? "not-allowed" : "pointer" }}
-            >
-              First
-            </button>
-            <button
-              onClick={goPrevious}
-              disabled={prevCursor === null}
-              style={{ padding: "8px 16px", cursor: prevCursor === null ? "not-allowed" : "pointer" }}
-            >
-              Previous
-            </button>
-            <span style={{ margin: "0 16px" }}>
+            <span className="text-neutral-dark-grey">
               Showing {filteredAdvocates.length > 0 ? (cursor || 0) + 1 : 0}-
               {(cursor || 0) + filteredAdvocates.length} of {total}
             </span>
-            <button
-              onClick={goNext}
-              disabled={nextCursor === null}
-              style={{ padding: "8px 16px", cursor: nextCursor === null ? "not-allowed" : "pointer" }}
-            >
-              Next
-            </button>
-            <button
-              onClick={goLast}
-              disabled={nextCursor === null}
-              style={{ padding: "8px 16px", cursor: nextCursor === null ? "not-allowed" : "pointer" }}
-            >
-              Last
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={resetPage}
+                disabled={prevCursor === null}
+                className="px-4 py-2 bg-primary text-neutral-white rounded-md hover:bg-primary-focused transition-colors disabled:bg-neutral-grey disabled:cursor-not-allowed disabled:hover:bg-neutral-grey font-medium"
+              >
+                First
+              </button>
+              <button
+                onClick={goPrevious}
+                disabled={prevCursor === null}
+                className="px-4 py-2 bg-primary text-neutral-white rounded-md hover:bg-primary-focused transition-colors disabled:bg-neutral-grey disabled:cursor-not-allowed disabled:hover:bg-neutral-grey font-medium"
+              >
+                Previous
+              </button>
+              <button
+                onClick={goNext}
+                disabled={nextCursor === null}
+                className="px-4 py-2 bg-primary text-neutral-white rounded-md hover:bg-primary-focused transition-colors disabled:bg-neutral-grey disabled:cursor-not-allowed disabled:hover:bg-neutral-grey font-medium"
+              >
+                Next
+              </button>
+              <button
+                onClick={goLast}
+                disabled={nextCursor === null}
+                className="px-4 py-2 bg-primary text-neutral-white rounded-md hover:bg-primary-focused transition-colors disabled:bg-neutral-grey disabled:cursor-not-allowed disabled:hover:bg-neutral-grey font-medium"
+              >
+                Last
+              </button>
+            </div>
           </>
         )}
       </div>
