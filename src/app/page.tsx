@@ -41,6 +41,9 @@ function fetchAdvocates(
   });
 }
 
+/**
+ * Formats phone number to national format for readability and l10n.
+ */
 function formatPhoneNumber(phoneNumber: number | string): string {
   try {
     const phoneStr = String(phoneNumber);
@@ -50,6 +53,19 @@ function formatPhoneNumber(phoneNumber: number | string): string {
   } catch {
     // Fallback to original if parsing fails
     return String(phoneNumber);
+  }
+}
+
+/**
+ * Converts phone number to E.164 format for use with tel: links.
+ */
+function getPhoneNumberE164(phoneNumber: number | string): string | null {
+  try {
+    const phoneStr = String(phoneNumber);
+    const phone = parsePhoneNumber(phoneStr, phoneStr.length === 10 ? "US" : undefined);
+    return phone.number;
+  } catch {
+    return null;
   }
 }
 
@@ -161,7 +177,18 @@ export default function Home() {
                     </div>
                   </td>
                   <td className="table-cell">{advocate.yearsOfExperience}</td>
-                  <td className="table-cell text-center min-w-40">{formatPhoneNumber(advocate.phoneNumber)}</td>
+                  <td className="table-cell text-center min-w-40">
+                    {getPhoneNumberE164(advocate.phoneNumber) ? (
+                      <a
+                        href={`tel:${getPhoneNumberE164(advocate.phoneNumber)}`}
+                        className="text-primary hover:text-primary-focused hover:underline"
+                      >
+                        {formatPhoneNumber(advocate.phoneNumber)}
+                      </a>
+                    ) : (
+                      formatPhoneNumber(advocate.phoneNumber)
+                    )}
+                  </td>
                 </tr>
               );
             })}
