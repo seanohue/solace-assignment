@@ -2,20 +2,22 @@
 
 ## Meta-commentary
 
-Typically, I would break these into more granular pull requests, maybe a chain of PRs.
+Typically, I would break these changes into more granular pull requests, maybe a chain of PRs.
 For sake of time, I will do just a single PR but attempt granular and meaningful working commits within the PR.
 
-## Project Install
+## First Impressions and Concerns
 
-Noted several packages that had vulnerabilities. Initially, I chose only to upgrade the ones that could be upgraded without breaking the project. This is because I wanted to get the project up and running first, so I could see what the non-broken version looked like before making any breaking changes.
+### Project Install
 
-## Running the development server
+Noted several packages that had vulnerabilities. Initially, I chose only to upgrade the ones that could be upgraded without breaking the project. This is because I wanted to get the project up and running first, so I could see what the non-broken version looked like before making any breaking changes. (Note: Did not get around to upgrading all packages, only non-breaking ones)
 
-The Next.js app compiles and builds in under 3 seconds. I'm not familiar enough with Next to know if this is expected or not; it seems acceptable but I know that some small apps with different bundlers such as vite can take under a second to build.
+### Running the development server
 
-After the initial build, loading the page seemed to take several seconds so there may be some performance issues there that can be addressed. I may use Lighthouse or a different tool to test the performance and see where bottlenecks are. I will also want to add a loading state here so that it does not appear to be frozen or broken to the user.
+The Next.js app compiles and builds in under 3 seconds. I'm not familiar enough with Next to know if this is expected or not; it seems acceptable but I know that some small apps with different bundlers such as vite can take under a second to build. 
 
-## UI/UX issues
+After the initial build, loading the page seemed to take several seconds so there may be some performance issues there that can be addressed. I may use Lighthouse or a different tool to test the performance and see where bottlenecks are. I will also want to add a loading state here so that it does not appear to be frozen or broken to the user. (Note: Did not get around to doing any major perf profiling here)
+
+### UI/UX issues
 
 My first impression (without looking at the code) is that there is little to no CSS styling being done, and as a result the table is a bit ugly and hard to read (no offense). There is a heading at the top, a search bar that is very plain, and a table with some data. There is also a small error banner at the bottom though it does not indicate what the error is.
 
@@ -36,19 +38,20 @@ In terms of the initial appearance of the app, my goals are:
   a. It might be nice to be able to "Search by _____" instead of a text search of all columns.
 
 
-## Full-stack concerns
+### Full-stack concerns
 
 For UI/UX reasons and performance reasons, it would be nice to have the data filtered on the server side, and paginated.
 
-## FE Code Quality Issues
+### FE Code Quality Issues
 
 On looking at the code, I noticed a few issues.
 1. The entire frontend page is a single component. Best practice would be to make it more modular as needed.
 2. The search function seems to use DOM APIs in an unusual way rather than using React features. For example, updating an element on the page with a search term and then querying the DOM to get the search term to use it to filter the data. I would use React state.
 3. `<br /> tags are used in the template for line breaks and styling. This should be avoided and CSS/Tailwind can be used to add padding, gaps or margin where desired.
 
+## Tracking the Work
 
-Checklist:
+### Checklist:
 - [x] Style the heading
 - [x] Style the search bar
 - [x] Remove line breaks and console logs.
@@ -60,8 +63,8 @@ Checklist:
 - [x] Enable pagination full-stack
 - [x] Format phone number
 - [x] Enable search by specialty
-- [ ] Enable search by city
-- [ ] Sort by last name by default
+- [x] Enable search by city
+- [x] Sort by last name by default
 - [x] Enable filtering by degree
 - [x] Enable filtering by years of experience
 - [x] Style the table in a way that makes it more readable and visually appealing.
@@ -70,4 +73,8 @@ Checklist:
 - [ ] Pagination, search and filtering should be represented in the URL potentially, or there could be a way to have a permalink to a specific page of results.
 - [ ] Ideally there are unit/integration tests for the frontend and backend.
 
+## Conclusion
 
+I did not get to all of the UI/UX improvements I would have liked, nor did I address perf, accessibility, or tech debt besides some minor pagination and form improvements. There is a lot to be done here, such as bringing in a form library, adding tests, etc.
+
+That said, this was a good way to spend 2+ hours, I practiced Pomodoro quite a bit, and learned a little more about Tailwind and Next.js. I'm happy with the progress I made and I'm looking forward to hearing back from the team at Solace!
