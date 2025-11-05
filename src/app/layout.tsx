@@ -5,8 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Solace Advocates | Index",
-  description: "Re-developed by Sean O'Donohue",
+  title: "Solace Candidate Assignment",
+  description: "Show us what you got",
 };
 
 export default function RootLayout({
